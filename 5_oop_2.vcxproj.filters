@@ -21,6 +21,12 @@
     <ClCompile Include="default.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="generate.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -29,6 +35,21 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="file1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="file2.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="file3.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="out1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="x.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="fx.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

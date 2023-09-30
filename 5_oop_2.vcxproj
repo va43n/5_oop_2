@@ -140,13 +140,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="default.cpp" />
+    <ClCompile Include="generate.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="file1.txt" />
+    <Text Include="file2.txt" />
+    <Text Include="file3.txt" />
+    <Text Include="fx.txt" />
+    <Text Include="out1.txt" />
+    <Text Include="x.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

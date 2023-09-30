@@ -1,42 +1,18 @@
 #include "Header.h"
 
-PearsonDistributionType2::PearsonDistributionType2(double mu0 = 0, double la0 = 1, double nu0 = 0) {
+PearsonDistributionType2::PearsonDistributionType2(double mu0, double la0, double nu0) {
 	setMU(mu0);
 	setLA(la0);
 	setNU(nu0);
-	set_moments();
 };
 
 PearsonDistributionType2::PearsonDistributionType2(std::string name) {
-	std::ifstream file;
-	int counter = 0;
-	double* args = new double[3];
-
-	file.open(name);
-
-	if (file.bad()) {
-		throw "Bad file name";
-	}
-	else {
-		while (!file.eof() && counter < 3) {
-			file >> args[counter];
-			counter++;
-		}
-
-		if (counter < 3) {
-			throw "File should consist 3 parameters: mu, la, nu.";
-		}
-
-		setMU(args[0]);
-		setLA(args[1]);
-		setNU(args[2]);
-		set_moments();
-	}
-	file.close();
+	load(name);
 }
 
 void PearsonDistributionType2::setMU(double mu0) {
-	mu = mu0 >= -10000 && mu0 <= 10000 ? mu0 : throw "Bad mu. -10000 <= mu <= 10000.";
+	mu = mu0 >= -10000 && mu0 <= 10000 ? mu0 : throw "ERROR: Bad mu. mu should be -10000 <= mu <= 10000.";
+	set_moments();
 }
 
 double PearsonDistributionType2::getMU() {
@@ -44,7 +20,8 @@ double PearsonDistributionType2::getMU() {
 }
 
 void PearsonDistributionType2::setLA(double la0) {
-	la = la0 > 0 ? la0 : throw "Bad la. la > 0.";
+	la = la0 > 0 ? la0 : throw "ERROR: Bad la. la should be > 0.";
+	set_moments();
 }
 
 double PearsonDistributionType2::getLA() {
@@ -52,7 +29,8 @@ double PearsonDistributionType2::getLA() {
 }
 
 void PearsonDistributionType2::setNU(double nu0) {
-	nu = nu0 >= 0 ? nu0 : throw "Bad nu. nu >= 0.";
+	nu = nu0 >= 0 ? nu0 : throw "ERROR: Bad nu. nu should be >= 0.";
+	set_moments();
 }
 
 double PearsonDistributionType2::getNU() {
@@ -89,12 +67,13 @@ double PearsonDistributionType2::get_model() {
 void PearsonDistributionType2::load(std::string name) {
 	std::ifstream file;
 	int counter = 0;
-	double* args = new double[3];
+	double temp;
+	std::string* args = new std::string[3];
 
 	file.open(name);
 
-	if (file.bad()) {
-		throw "Bad file name";
+	if (file.fail()) {
+		throw "ERROR: Bad file name";
 	}
 	else {
 		while (!file.eof() && counter < 3) {
@@ -103,26 +82,37 @@ void PearsonDistributionType2::load(std::string name) {
 		}
 
 		if (counter < 3) {
-			throw "File should consist 3 parameters: mu, la, nu.";
+			throw "ERROR: File should consist 3 parameters: mu, la, nu.";
 		}
 
-		setMU(args[0]);
-		setLA(args[1]);
-		setNU(args[2]);
-		set_moments();
+		for (int i = 0; i < 3; i++) {
+			try {
+				temp = stod(args[i]);
+			}
+			catch (std::invalid_argument) {
+				throw "ERROR: One of the parameters is not a number. Check your file and try again.";
+			}
+		}
+
+		setMU(stod(args[0]));
+		setLA(stod(args[1]));
+		setNU(stod(args[2]));
 	}
 	file.close();
 }
 
 void PearsonDistributionType2::save(std::string name) {
+	std::ifstream check;
 	std::ofstream file;
 
-	file.open(name, std::ios::out);
+	check.open(name);
 
-	if (file.bad()) {
-		throw "Bad file name";
+	if (check.fail()) {
+		throw "ERROR: Bad file name";
 	}
 	else {
+		check.close();
+		file.open(name, std::ios::out);
 		file << mu << " " << la << " " << nu;
 	}
 	file.close();
