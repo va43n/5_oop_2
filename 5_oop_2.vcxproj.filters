@@ -27,4 +27,9 @@
       <Filter>Файлы ресурсов</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="file1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
