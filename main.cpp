@@ -6,7 +6,7 @@ int main() {
 
 	test();
 
-	generate_distribution(p);
+	p.generate_distribution();
 	
 	return 0;
 }

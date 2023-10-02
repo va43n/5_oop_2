@@ -35,10 +35,10 @@ public:
 	void load(std::string name);
 	void save(std::string name);
 
+	void generate_distribution();
+
 private:
 	void set_moments();
 };
 
 void test();
-
-void generate_distribution(PearsonDistributionType2 p);

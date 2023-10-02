@@ -11,7 +11,7 @@ PearsonDistributionType2::PearsonDistributionType2(std::string name) {
 }
 
 void PearsonDistributionType2::setMU(double mu0) {
-	mu = mu0 >= -10000 && mu0 <= 10000 ? mu0 : throw "ERROR: Bad mu. mu should be -10000 <= mu <= 10000.";
+	mu = mu0 >= -10000 && mu0 <= 10000 ? mu0 : throw "ERROR: Bad mu. mu should be: -10000 <= mu <= 10000.";
 	set_moments();
 }
 
@@ -20,7 +20,7 @@ double PearsonDistributionType2::getMU() {
 }
 
 void PearsonDistributionType2::setLA(double la0) {
-	la = la0 > 0 ? la0 : throw "ERROR: Bad la. la should be > 0.";
+	la = la0 > 0 && la <= 10000 ? la0 : throw "ERROR: Bad la. la should be: 0 < la <= 10000.";
 	set_moments();
 }
 
@@ -29,7 +29,7 @@ double PearsonDistributionType2::getLA() {
 }
 
 void PearsonDistributionType2::setNU(double nu0) {
-	nu = nu0 >= 0 ? nu0 : throw "ERROR: Bad nu. nu should be >= 0.";
+	nu = nu0 >= 0 && nu <= 10000 ? nu0 : throw "ERROR: Bad nu. nu should be: 0 <= nu <= 10000.";
 	set_moments();
 }
 
@@ -116,4 +116,28 @@ void PearsonDistributionType2::save(std::string name) {
 		file << mu << " " << la << " " << nu;
 	}
 	file.close();
+}
+
+void PearsonDistributionType2::generate_distribution() {
+	std::ofstream file1, file2;
+	std::string s_number;
+	double number;
+
+
+	file1.open("x.txt", std::ios::out);
+	file2.open("fx.txt", std::ios::out);
+
+	for (int i = 0; i < 10000; i++) {
+		number = get_model();
+
+		s_number = std::to_string(number);
+		s_number[s_number.find(".")] = ',';
+		file1 << s_number << "\n";
+
+		s_number = std::to_string(get_f(number));
+		s_number[s_number.find(".")] = ',';
+		file2 << s_number << "\n";
+	}
+
+	file1.close();
 }
