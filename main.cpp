@@ -11,6 +11,7 @@ int main() {
 
 		std::cout << mix.getComponent1().getLA() << " " << mix.getComponent2().getMU();
 
+		
 		mix.generate_distribution();
 
 		//test();

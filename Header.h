@@ -66,4 +66,31 @@ public:
 	void generate_distribution();
 };
 
+class Empirical {
+	int n, k;
+	double delta, min;
+	int* counter;
+	double* data, *frequency, *density;
+
+public:
+	Empirical(int n0, PearsonDistributionType2& pd, int k0 = 1);
+	Empirical(int n0, Mixture& pd, int k0 = 1);
+	Empirical(int n0, Empirical& pd, int k0 = 1);
+
+	Empirical(const Empirical& emp);
+	Empirical& operator=(const Empirical& emp);
+
+	~Empirical();
+
+	double get_f(double x);
+	double get_model();
+
+	double* get_moments();
+
+private:
+	void get_min_delta();
+	void get_counter_frequency_density();
+
+};
+
 void test();

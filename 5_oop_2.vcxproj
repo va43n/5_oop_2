@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="default.cpp" />
+    <ClCompile Include="emp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mix.cpp" />
     <ClCompile Include="test.cpp" />
