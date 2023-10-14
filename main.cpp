@@ -2,11 +2,24 @@
 
 int main() {
 	srand(time(NULL));
-	PearsonDistributionType2 p(4.3, 6.1, 10);
 
-	test();
+	try {
+		PearsonDistributionType2 pd1(1., 2., 1.);
+		PearsonDistributionType2 pd2(-3., 5., 5.);
+		double p = 0.5;
+		Mixture mix(pd1, pd2, p);
 
-	p.generate_distribution();
+		std::cout << mix.getComponent1().getLA() << " " << mix.getComponent2().getMU();
+
+		mix.generate_distribution();
+
+		//test();
+
+		//p.generate_distribution();
+	}
+	catch (const char* e) {
+		std::cout << e;
+	}
 	
 	return 0;
 }

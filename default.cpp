@@ -140,4 +140,5 @@ void PearsonDistributionType2::generate_distribution() {
 	}
 
 	file1.close();
+	file2.close();
 }

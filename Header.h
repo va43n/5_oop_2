@@ -41,4 +41,29 @@ private:
 	void set_moments();
 };
 
+class Mixture {
+	PearsonDistributionType2 pd1, pd2;
+	double p;
+
+public:
+	Mixture(PearsonDistributionType2& pd01, PearsonDistributionType2& pd02, double p0 = 0.5) : p(p0 > 0 && p0 < 1 ? p0 : throw "ERROR: Bad p. p should be: 0 < p < 1."), pd1(pd01), pd2(pd02) {}
+	Mixture(std::string p_file, std::string pd1_file, std::string pd2_file);
+
+	PearsonDistributionType2& getComponent1() { return pd1; }
+	PearsonDistributionType2& getComponent2() { return pd2; }
+
+	double get_p();
+	void set_p(double p0);
+
+	double* get_moments();
+
+	double get_f(double x);
+	double get_model();
+
+	void load(std::string p_file, std::string pd1_file, std::string pd2_file);
+	void save(std::string p_file, std::string pd1_file, std::string pd2_file);
+
+	void generate_distribution();
+};
+
 void test();
