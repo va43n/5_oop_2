@@ -41,13 +41,13 @@ private:
 	void set_moments();
 };
 
-class Mixture {
+class MixtureDistribution {
 	PearsonDistributionType2 pd1, pd2;
 	double p;
 
 public:
-	Mixture(PearsonDistributionType2& pd01, PearsonDistributionType2& pd02, double p0 = 0.5) : p(p0 > 0 && p0 < 1 ? p0 : throw "ERROR: Bad p. p should be: 0 < p < 1."), pd1(pd01), pd2(pd02) {}
-	Mixture(std::string p_file, std::string pd1_file, std::string pd2_file);
+	MixtureDistribution(PearsonDistributionType2& pd01, PearsonDistributionType2& pd02, double p0 = 0.5) : p(p0 > 0 && p0 < 1 ? p0 : throw "ERROR: Bad p. p should be: 0 < p < 1."), pd1(pd01), pd2(pd02) {}
+	MixtureDistribution(std::string p_file, std::string pd1_file, std::string pd2_file);
 
 	PearsonDistributionType2& getComponent1() { return pd1; }
 	PearsonDistributionType2& getComponent2() { return pd2; }
@@ -66,20 +66,20 @@ public:
 	void generate_distribution();
 };
 
-class Empirical {
+class EmpiricalDistribution {
 	int n, k;
 	double delta, min;
 	int* counter;
 	double* data, *frequency, *density;
 
 public:
-	Empirical(int n0, PearsonDistributionType2& pd, int k0 = 1);
-	Empirical(int n0, Mixture& pd, int k0 = 1);
-	Empirical(int n0, Empirical& pd, int k0 = 1);
-	Empirical(std::string filename);
+	EmpiricalDistribution(int n0, PearsonDistributionType2& pd, int k0 = 1);
+	EmpiricalDistribution(int n0, MixtureDistribution& pd, int k0 = 1);
+	EmpiricalDistribution(int n0, EmpiricalDistribution& pd, int k0 = 1);
+	EmpiricalDistribution(std::string filename);
 
-	Empirical(const Empirical& emp);
-	Empirical& operator=(const Empirical& emp);
+	EmpiricalDistribution(const EmpiricalDistribution& emp);
+	EmpiricalDistribution& operator=(const EmpiricalDistribution& emp);
 
 	double get_f(double x);
 	double get_model();
@@ -91,7 +91,7 @@ public:
 
 	void generate_distribution();
 
-	~Empirical();
+	~EmpiricalDistribution();
 
 private:
 	void get_min_delta();

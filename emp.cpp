@@ -1,6 +1,6 @@
 #include "Header.h"
 
-Empirical::Empirical (int n0, PearsonDistributionType2& pd, int k0) : n(n0 > 1 ? n0 : throw "ERROR: Bad n. n should be > 1."), k(k0 > 1 ? k0 : int(log(double(n)) / log(double(2.))) + 1.), data(new double[n]), counter(new int[k]), frequency(new double[k]), density(new double[k]) {
+EmpiricalDistribution::EmpiricalDistribution(int n0, PearsonDistributionType2& pd, int k0) : n(n0 > 1 ? n0 : throw "ERROR: Bad n. n should be > 1."), k(k0 > 1 ? k0 : int(log(double(n)) / log(double(2.))) + 1.), data(new double[n]), counter(new int[k]), frequency(new double[k]), density(new double[k]) {
 	for (int i = 0; i < n; i++) {
 		data[i] = pd.get_model();
 	}
@@ -9,7 +9,7 @@ Empirical::Empirical (int n0, PearsonDistributionType2& pd, int k0) : n(n0 > 1 ?
 	get_counter_frequency_density();
 }
 
-Empirical::Empirical(int n0, Mixture& mix, int k0) : n(n0 > 1 ? n0 : throw "ERROR: Bad n. n should be > 1."), k(k0 > 1 ? k0 : int(log(double(n)) / log(double(2.))) + 1.), data(new double[n]), counter(new int[k]), frequency(new double[k]), density(new double[k]) {
+EmpiricalDistribution::EmpiricalDistribution(int n0, MixtureDistribution& mix, int k0) : n(n0 > 1 ? n0 : throw "ERROR: Bad n. n should be > 1."), k(k0 > 1 ? k0 : int(log(double(n)) / log(double(2.))) + 1.), data(new double[n]), counter(new int[k]), frequency(new double[k]), density(new double[k]) {
 	for (int i = 0; i < n; i++) {
 		data[i] = mix.get_model();
 	}
@@ -18,7 +18,7 @@ Empirical::Empirical(int n0, Mixture& mix, int k0) : n(n0 > 1 ? n0 : throw "ERRO
 	get_counter_frequency_density();
 }
 
-Empirical::Empirical(int n0, Empirical& emp, int k0) : n(n0 > 1 ? n0 : throw "ERROR: Bad n. n should be > 1."), k(k0 > 1 ? k0 : int(log(double(n)) / log(double(2.))) + 1.), data(new double[n]), counter(new int[k]), frequency(new double[k]), density(new double[k]) {
+EmpiricalDistribution::EmpiricalDistribution(int n0, EmpiricalDistribution& emp, int k0) : n(n0 > 1 ? n0 : throw "ERROR: Bad n. n should be > 1."), k(k0 > 1 ? k0 : int(log(double(n)) / log(double(2.))) + 1.), data(new double[n]), counter(new int[k]), frequency(new double[k]), density(new double[k]) {
 	for (int i = 0; i < n; i++) {
 		data[i] = emp.get_model();
 	}
@@ -27,11 +27,11 @@ Empirical::Empirical(int n0, Empirical& emp, int k0) : n(n0 > 1 ? n0 : throw "ER
 	get_counter_frequency_density();
 }
 
-Empirical::Empirical(std::string filename) {
+EmpiricalDistribution::EmpiricalDistribution(std::string filename) {
 	load(filename);
 }
 
-Empirical::Empirical(const Empirical& emp) {
+EmpiricalDistribution::EmpiricalDistribution(const EmpiricalDistribution& emp) {
 	n = emp.n;
 	k = emp.k;
 	min = emp.min;
@@ -52,11 +52,11 @@ Empirical::Empirical(const Empirical& emp) {
 	}
 }
 
-Empirical::~Empirical() {
+EmpiricalDistribution::~EmpiricalDistribution() {
 	delete[] data, counter, frequency, density;
 }
 
-Empirical& Empirical::operator=(const Empirical& emp) {
+EmpiricalDistribution& EmpiricalDistribution::operator=(const EmpiricalDistribution& emp) {
 	if (this == &emp) return *this;
 
 	if (n != emp.n) {
@@ -76,13 +76,19 @@ Empirical& Empirical::operator=(const Empirical& emp) {
 	for (int i = 0; i < n; i++) {
 		data[i] = emp.data[i];
 	}
+
+	for (int i = 0; i < k; i++) {
+		counter[i] = emp.counter[i];
+		frequency[i] = emp.frequency[i];
+		density[i] = emp.density[i];
+	}
+
 	get_min_delta();
-	get_counter_frequency_density();
 
 	return *this;
 }
 
-void Empirical::get_min_delta() {
+void EmpiricalDistribution::get_min_delta() {
 	double max = data[0];
 	min = data[0];
 
@@ -97,7 +103,7 @@ void Empirical::get_min_delta() {
 	delta = (max - min) / k;
 }
 
-void Empirical::get_counter_frequency_density() {
+void EmpiricalDistribution::get_counter_frequency_density() {
 	bool flag;
 
 	counter = new int[k];
@@ -126,7 +132,7 @@ void Empirical::get_counter_frequency_density() {
 	}
 }
 
-double Empirical::get_f(double x) {
+double EmpiricalDistribution::get_f(double x) {
 	for (int i = 0; i < k; i++) {
 		if (x >= min + i * delta && x < min + (i + 1) * delta) {
 			return density[i];
@@ -135,7 +141,7 @@ double Empirical::get_f(double x) {
 	return density[k - 1];
 }
 
-double Empirical::get_model() {
+double EmpiricalDistribution::get_model() {
 	double r1, r2, sum = 0;
 
 	do r1 = (double)rand() / RAND_MAX; while (r1 == 0. || r1 == 1.);
@@ -155,7 +161,7 @@ double Empirical::get_model() {
 	throw "ERROR: Something went wrong.";
 }
 
-double* Empirical::get_moments() {
+double* EmpiricalDistribution::get_moments() {
 	double* moments = new double[4];
 
 	for (int i = 0; i < 4; i++) {
@@ -185,7 +191,7 @@ double* Empirical::get_moments() {
 	return moments;
 }
 
-void Empirical::load(std::string filename) {
+void EmpiricalDistribution::load(std::string filename) {
 	std::ifstream file;
 	std::string temp;
 	int temp_n;
@@ -254,7 +260,7 @@ void Empirical::load(std::string filename) {
 	get_counter_frequency_density();
 }
 
-void Empirical::save(std::string filename) {
+void EmpiricalDistribution::save(std::string filename) {
 	std::ifstream check;
 	std::ofstream file;
 
@@ -275,7 +281,7 @@ void Empirical::save(std::string filename) {
 	file.close();
 }
 
-void Empirical::generate_distribution() {
+void EmpiricalDistribution::generate_distribution() {
 	std::ofstream file1, file2;
 	std::string s_number;
 	double number;

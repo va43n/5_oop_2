@@ -154,7 +154,7 @@ void mix_test() {
 	//
 	std::cout << std::endl << std::endl << "\t\t----------test 1----------" << std::endl;
 	std::cout << "\t\t----------First constructor" << std::endl;
-	Mixture mix1(pd1, pd2);
+	MixtureDistribution mix1(pd1, pd2);
 	if (mix1.get_p() == 0.5) {
 		std::cout << ":D First constructor is correct." << std::endl;
 
@@ -189,7 +189,7 @@ void mix_test() {
 	std::cout << "\t\t----------Enter wrong p (1.5) to constructor and \"set_p()\"" << std::endl;
 
 	try {
-		Mixture mix2(pd1, pd2, 1.5);
+		MixtureDistribution mix2(pd1, pd2, 1.5);
 	}
 	catch (const char* e) {
 		std::cout << e << std::endl;
@@ -280,7 +280,7 @@ void mix_test() {
 	std::cout << "SAVE: p - file1.txt, first component - file2.txt, second component - file3.txt" << std::endl << std::endl;
 	mix1.save("file1.txt", "file2.txt", "file3.txt");
 
-	Mixture mix2("file1.txt", "file2.txt", "file3.txt");
+	MixtureDistribution mix2("file1.txt", "file2.txt", "file3.txt");
 	std::cout << "LOAD: p - file1.txt, first component - file2.txt, second component - file3.txt" << std::endl;
 	std::cout << "p: " << mix2.get_p() << std::endl;
 	std::cout << "mu of the first component: " << mix2.getComponent1().getMU() << std::endl;
@@ -297,7 +297,7 @@ void mix_test() {
 void emp_test() {
 	PearsonDistributionType2 pd1(3., 5., 3.);
 	PearsonDistributionType2 pd2(-1., 4., 5.);
-	Mixture mix1(pd1, pd2, 0.6);
+	MixtureDistribution mix1(pd1, pd2, 0.6);
 	double number;
 	double* moments;
 
@@ -311,19 +311,19 @@ void emp_test() {
 	std::cout << std::endl << std::endl << "\t\t----------test 1----------" << std::endl;
 	std::cout << "\t\t----------First constructor" << std::endl;
 	std::cout << "(Pearson distribution)" << std::endl;
-	Empirical emp1(10000, pd1);
+	EmpiricalDistribution emp1(10000, pd1);
 	//emp1.generate_distribution();
 	//pd1.generate_distribution();
 	std::cout << "Check emp_test1_1.png" << std::endl << std::endl;
 
 	std::cout << "(Mixture distribution)" << std::endl;
-	Empirical emp2(10000, mix1);
+	EmpiricalDistribution emp2(10000, mix1);
 	//emp2.generate_distribution();
 	//mix1.generate_distribution();
 	std::cout << "Check emp_test1_2.png" << std::endl << std::endl;
 
 	std::cout << "(Empirical distribution)" << std::endl;
-	Empirical emp3(10000, emp2);
+	EmpiricalDistribution emp3(10000, emp2);
 	//emp3.generate_distribution();
 	//emp2.generate_distribution();
 	std::cout << "Check emp_test1_3.png" << std::endl << std::endl;
@@ -333,7 +333,7 @@ void emp_test() {
 	//
 	std::cout << std::endl << std::endl << "\t\t----------test 2----------" << std::endl;
 	std::cout << "\t\t----------First constructor, set k = 3" << std::endl;
-	Empirical emp4(10000, pd2, 3);
+	EmpiricalDistribution emp4(10000, pd2, 3);
 	//emp4.generate_distribution();
 	//pd2.generate_distribution();
 	std::cout << "Check emp_test2_1.png" << std::endl << std::endl;
@@ -357,6 +357,11 @@ void emp_test() {
 	std::cout << moments[0] << " " << moments[1] << " " << moments[2] << " " << moments[3] << std::endl << std::endl;
 
 	std::cout << "GET_F" << std::endl;
+	std::cout << "get_f of Pearson distribution:" << std::endl;
+	std::cout << "get_f(" << 2 << ") = " << pd1.get_f(2) << std::endl;
+	std::cout << "get_f(" << -1 << ") = " << pd1.get_f(-1) << std::endl;
+	std::cout << "get_f(" << 10 << ") = " << pd1.get_f(10) << std::endl;
+	std::cout << "get_f of copied version of Pearson distribution:" << std::endl;
 	std::cout << "get_f(" << 2 << ") = " << emp1.get_f(2) << std::endl;
 	std::cout << "get_f(" << -1 << ") = " << emp1.get_f(-1) << std::endl;
 	std::cout << "get_f(" << 10 << ") = " << emp1.get_f(10) << std::endl << std::endl;
@@ -409,7 +414,7 @@ void emp_test() {
 	std::cout << "\t\t----------\operator \"=\" and copy constructor" << std::endl;
 
 	std::cout << "OPERATOR \"=\":" << std::endl;
-	Empirical emp5(1000, pd2);
+	EmpiricalDistribution emp5(1000, pd2);
 	emp5 = emp1;
 	moments = emp1.get_moments();
 	std::cout << "Moments of start empirical distribution:" << std::endl;
@@ -420,7 +425,7 @@ void emp_test() {
 	std::cout << moments[0] << " " << moments[1] << " " << moments[2] << " " << moments[3] << std::endl << std::endl;
 
 	std::cout << "COPY CONSTRUCTOR:" << std::endl;
-	Empirical emp6 = emp1;
+	EmpiricalDistribution emp6 = emp1;
 	moments = emp1.get_moments();
 	std::cout << "Moments of start empirical distribution:" << std::endl;
 	std::cout << moments[0] << " " << moments[1] << " " << moments[2] << " " << moments[3] << std::endl;

@@ -1,18 +1,18 @@
 #include "Header.h"
 
-Mixture::Mixture(std::string p_file, std::string pd1_file, std::string pd2_file) {
+MixtureDistribution::MixtureDistribution(std::string p_file, std::string pd1_file, std::string pd2_file) {
 	load(p_file, pd1_file, pd2_file);
 }
 
-double Mixture::get_p() {
+double MixtureDistribution::get_p() {
 	return p;
 }
 
-void Mixture::set_p(double p0) {
+void MixtureDistribution::set_p(double p0) {
 	p = p0 > 0 && p0 < 1 ? p0 : throw "ERROR: Bad p. p should be: 0 < p < 1.";
 }
 
-double* Mixture::get_moments() {
+double* MixtureDistribution::get_moments() {
 	double* moments = new double[4];
 	double* moments1 = pd1.get_moments();
 	double* moments2 = pd2.get_moments();
@@ -25,11 +25,11 @@ double* Mixture::get_moments() {
 	return moments;
 }
 
-double Mixture::get_f(double x) {
+double MixtureDistribution::get_f(double x) {
 	return (1. - p) * pd1.get_f(x) + p * pd2.get_f(x);
 }
 
-double Mixture::get_model() {
+double MixtureDistribution::get_model() {
 	double r;
 
 	do r = (double)rand() / RAND_MAX; while (r == 0. || r == 1.);
@@ -39,7 +39,7 @@ double Mixture::get_model() {
 	return pd2.get_model();
 }
 
-void Mixture::load(std::string p_file, std::string pd1_file, std::string pd2_file) {
+void MixtureDistribution::load(std::string p_file, std::string pd1_file, std::string pd2_file) {
 	std::ifstream file;
 	std::string str_p;
 
@@ -69,7 +69,7 @@ void Mixture::load(std::string p_file, std::string pd1_file, std::string pd2_fil
 	pd2.load(pd2_file);
 }
 
-void Mixture::save(std::string p_file, std::string pd1_file, std::string pd2_file) {
+void MixtureDistribution::save(std::string p_file, std::string pd1_file, std::string pd2_file) {
 	std::ifstream check;
 	std::ofstream file;
 
@@ -89,7 +89,7 @@ void Mixture::save(std::string p_file, std::string pd1_file, std::string pd2_fil
 	pd2.save(pd2_file);
 }
 
-void Mixture::generate_distribution() {
+void MixtureDistribution::generate_distribution() {
 	std::ofstream file1, file2;
 	std::string s_number;
 	double number;
