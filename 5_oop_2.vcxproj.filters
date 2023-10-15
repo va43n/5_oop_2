@@ -55,5 +55,31 @@
     <Text Include="fx.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="emp_test_1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="emp_test_2.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="emp_test_3.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="emp_test_4.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="emp_test1_1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="emp_test1_2.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="emp_test1_3.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="emp_test2_1.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

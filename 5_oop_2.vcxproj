@@ -149,12 +149,22 @@
     <ClInclude Include="Header.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="emp_test_1.txt" />
+    <Text Include="emp_test_2.txt" />
+    <Text Include="emp_test_3.txt" />
+    <Text Include="emp_test_4.txt" />
     <Text Include="file1.txt" />
     <Text Include="file2.txt" />
     <Text Include="file3.txt" />
     <Text Include="fx.txt" />
     <Text Include="out1.txt" />
     <Text Include="x.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="emp_test1_1.png" />
+    <Image Include="emp_test1_2.png" />
+    <Image Include="emp_test1_3.png" />
+    <Image Include="emp_test2_1.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

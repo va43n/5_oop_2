@@ -76,14 +76,18 @@ public:
 	Empirical(int n0, PearsonDistributionType2& pd, int k0 = 1);
 	Empirical(int n0, Mixture& pd, int k0 = 1);
 	Empirical(int n0, Empirical& pd, int k0 = 1);
+	Empirical(std::string filename);
 
-	//Empirical(const Empirical& emp);
+	Empirical(const Empirical& emp);
 	Empirical& operator=(const Empirical& emp);
 
 	double get_f(double x);
 	double get_model();
 
 	double* get_moments();
+
+	void load(std::string filename);
+	void save(std::string filename);
 
 	void generate_distribution();
 
@@ -95,3 +99,5 @@ private:
 };
 
 void test();
+void mix_test();
+void emp_test();

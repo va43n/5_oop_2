@@ -27,15 +27,33 @@ Empirical::Empirical(int n0, Empirical& emp, int k0) : n(n0 > 1 ? n0 : throw "ER
 	get_counter_frequency_density();
 }
 
-//Empirical::Empirical(const Empirical& emp) {
-//
-//}
+Empirical::Empirical(std::string filename) {
+	load(filename);
+}
+
+Empirical::Empirical(const Empirical& emp) {
+	n = emp.n;
+	k = emp.k;
+	min = emp.min;
+	delta = emp.delta;
+
+	data = new double[n];
+	for (int i = 0; i < n; i++) {
+		data[i] = emp.data[i];
+	}
+
+	counter = new int[k];
+	frequency = new double[k];
+	density = new double[k];
+	for (int i = 0; i < k; i++) {
+		counter[i] = emp.counter[i];
+		frequency[i] = emp.frequency[i];
+		density[i] = emp.density[i];
+	}
+}
 
 Empirical::~Empirical() {
-	delete[] data;
-	delete[] counter;
-	delete[] frequency;
-	delete[] density;
+	delete[] data, counter, frequency, density;
 }
 
 Empirical& Empirical::operator=(const Empirical& emp) {
@@ -48,20 +66,10 @@ Empirical& Empirical::operator=(const Empirical& emp) {
 	}
 	
 	if (k != emp.k) {
-		delete[] counter;
+		delete[] counter, frequency, density;
 		k = emp.k;
 		counter = new int[k];
-	}
-
-	if (k != emp.k) {
-		delete[] frequency;
-		k = emp.k;
 		frequency = new double[k];
-	}
-
-	if (k != emp.k) {
-		delete[] density;
-		k = emp.k;
 		density = new double[k];
 	}
 
@@ -175,6 +183,96 @@ double* Empirical::get_moments() {
 	moments[3] = moments[3] / ((double)n * pow(moments[1], 2)) - 3;
 
 	return moments;
+}
+
+void Empirical::load(std::string filename) {
+	std::ifstream file;
+	std::string temp;
+	int temp_n;
+	double* temp_data;
+
+	file.open(filename);
+
+	if (file.fail()) {
+		throw "ERROR: Bad file name";
+	}
+
+	if (!file.eof()) {
+		file >> temp;
+	}
+	else {
+		throw "ERROR: File should consist n";
+	}
+	try {
+		temp_n = stoi(temp);
+	}
+	catch (std::invalid_argument) {
+		throw "ERROR: n is not a number, check your file and try again";
+	}
+
+	if (temp_n <= 1) {
+		throw "ERROR: n should be > 1";
+	}
+
+	temp_n = stoi(temp);
+
+	temp_data = new double[temp_n];
+	for (int i = 0; i < temp_n; i++) {
+		if (file.eof()) {
+			throw "ERROR: Not enough numbers in data, check your file and try again";
+		}
+		file >> temp;
+		try {
+			temp_data[i] = stod(temp);
+		}
+		catch (std::invalid_argument) {
+			throw "ERROR: One of the numbers in data is not a number, check your file and try again";
+		}
+		temp_data[i] = stod(temp);
+	}
+
+	file.close();
+
+	delete[] data;
+	delete[] counter;
+	delete[] frequency;
+	delete[] density;
+
+	n = temp_n;
+	data = new double[n];
+
+	k = int(log(double(n)) / log(double(2.))) + 1.;
+	counter = new int[k];
+	frequency = new double[k];
+	density = new double[k];
+
+	for (int i = 0; i < n; i++) {
+		data[i] = temp_data[i];
+	}
+
+	get_min_delta();
+	get_counter_frequency_density();
+}
+
+void Empirical::save(std::string filename) {
+	std::ifstream check;
+	std::ofstream file;
+
+	check.open(filename);
+
+	if (check.fail()) {
+		throw "ERROR: Bad file name";
+	}
+
+	check.close();
+	file.open(filename, std::ios::out);
+	file << n << std::endl;
+
+	for (int i = 0; i < n; i++) {
+		file << data[i] << " ";
+	}
+
+	file.close();
 }
 
 void Empirical::generate_distribution() {
